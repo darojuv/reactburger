@@ -36,7 +36,7 @@ class BurgerIngradient extends Component {
         return ingredient;
     }
 }
-BurgerIngradient.PropTypes = {
+BurgerIngradient.propTypes = {
     type: PropTypes.string.isRequired
 }
 export default BurgerIngradient;
