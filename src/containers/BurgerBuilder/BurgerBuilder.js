@@ -22,7 +22,7 @@ class BurgerBuilder extends Component {
       },
       totalPrice: 4,
       purchasable: false,
-      purchasing: false  
+      purchasing: false
     };
     updatePurchaseState (ingredients){
         const sum = Object.keys(ingredients)
@@ -82,7 +82,7 @@ class BurgerBuilder extends Component {
             disableInfo[key] = disableInfo[key] <= 0;
         }
         return(
-            <Aux>   
+            <Aux>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler} >
                     <OrderSummary 
                     ingredients={this.state.ingredients}
