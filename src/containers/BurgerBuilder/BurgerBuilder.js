@@ -74,30 +74,35 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({loading: true});
-        //alert('You continued !');
-        const order = {
-            ingradients: this.state.ingredients,
-            price: this.state.totolPrice,
-            customer: {
-                    name: 'Max Venu',
-                    address: {street: 'Test Street 1',
-                    zipCode: '23413',
-                    country: 'India'
-                },
-                email: 'asdf@asdf.com',
-            },
-            deliveryMethod: 'fastest'
-        };
-        axios.post('/orders.json', order)
-        .then(response =>  {
-            //console.log(response);
-            this.setState({loading: false, purchasing: false});
-        })
-        .catch(error => {
-            //console.log('error: ' + error);
-            this.setState({loading: false, purchasing: false});            
-        });
+        console.log(this.props);
+        // this.setState({loading: true});
+        // //alert('You continued !');
+        // const order = {
+        //     ingradients: this.state.ingredients,
+        //     price: this.state.totolPrice,
+        //     customer: {
+        //             name: 'Max Venu',
+        //             address: {street: 'Test Street 1',
+        //             zipCode: '23413',
+        //             country: 'India'
+        //         },
+        //         email: 'asdf@asdf.com',
+        //     },
+        //     deliveryMethod: 'fastest'
+        // };
+        // axios.post('/orders.json', order)
+        // .then(response =>  {
+        //     //console.log(response);
+        //     this.setState({loading: false, purchasing: false});
+        // })
+        // .catch(error => {
+        //     //console.log('error: ' + error);
+        //     this.setState({loading: false, purchasing: false});            
+        // });
+        this.props.history.push('/checkout?salad=' + this.state.ingredients.salad 
+                                + '&bacon=' + this.state.ingredients.bacon
+                                + '&cheese=' + this.state.ingredients.cheese
+                                + '&meat=' + this.state.ingredients.meat);
     }
     componentDidMount(){
         axios.get('https://react-my-burger-772be.firebaseio.com/Ingredients.json')
