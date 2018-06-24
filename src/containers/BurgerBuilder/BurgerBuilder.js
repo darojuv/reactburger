@@ -7,7 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-//import burger from '../../components/Burger/Burger';
+// import burger from '../../components/Burger/Burger';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -99,10 +99,21 @@ class BurgerBuilder extends Component {
         //     //console.log('error: ' + error);
         //     this.setState({loading: false, purchasing: false});            
         // });
-        this.props.history.push('/checkout?salad=' + this.state.ingredients.salad 
-                                + '&bacon=' + this.state.ingredients.bacon
-                                + '&cheese=' + this.state.ingredients.cheese
-                                + '&meat=' + this.state.ingredients.meat);
+        // // this.props.history.push('/checkout?salad=' + this.state.ingredients.salad 
+        // //                         + '&bacon=' + this.state.ingredients.bacon
+        // //                         + '&cheese=' + this.state.ingredients.cheese
+        // //                         + '&meat=' + this.state.ingredients.meat);
+        
+        const queryParams = [];
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname:'/checkout',
+            search: '?' + queryString
+        });        
     }
     componentDidMount(){
         axios.get('https://react-my-burger-772be.firebaseio.com/Ingredients.json')
