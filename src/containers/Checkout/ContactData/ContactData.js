@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import axios from '../../../axios-orders';
 import classes from './ContactData.css';
 import Input from '../../../components/UI/Input/Input';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actionTypes from '../../../store/actions/index';
 
 class ContactData extends Component{
     state = {
@@ -86,7 +88,7 @@ class ContactData extends Component{
                         {value:'cheaptest', displayValue:'cheaptest' }
                     ]
                 },
-                value: '',
+                value: 'fastest',
                 rules:{},
                 isValid: true
             }
@@ -113,17 +115,19 @@ class ContactData extends Component{
         for(let dataKey in this.state.orderForm){
             formData[dataKey] = this.state.orderForm[dataKey].value;
         }
-        this.setState({loading: true});
+        //this.setState({loading: true});
+        //this.props.loading
         //alert('You continued !');
         const order = {
             ingredients: this.props.ings,
             price: this.props.ttlPrice,
-            orderData: formData,
-            deliveryMethod: 'fastest'
+            orderData: formData
+            /*,
+            deliveryMethod: 'fastest'*/
         };
-        console.log('order:' + order);
-        axios.post('/orders.json', order)
-        .then(response =>  {
+         this.props.onBurgerOrder(order);
+/*        axios.post('/orders.json', order)
+         .then(response =>  {
             //console.log(response);
             this.setState({loading: false});
             this.props.history.push('/');
@@ -131,10 +135,9 @@ class ContactData extends Component{
         .catch(error => {
             //console.log('error: ' + error);
             this.setState({loading: false});            
-        });
+        }); */
     }
     changeHandler(event, key){
-        //console.log(event.target.value);
         const tempForm = {...this.state.orderForm};
         const innerData = {...tempForm[key]};
         innerData.value = event.target.value;
@@ -170,10 +173,11 @@ class ContactData extends Component{
                         />
             ))}
 
-            {/* <Button btnType="Danger" > CANCEL </Button> */}
-            <Button disabled={!this.state.formValid} btnType="Success" clicked={this.orderHandler} > ORDER </Button>
+            <Button disabled={!this.state.formValid} btnType="Success" clicked={this.orderHandler} > 
+                ORDER 
+            </Button>
         </form>);
-        if(this.state.loading){
+        if(this.props.spinner){
             form = <Spinner />
         }
         return(
@@ -186,10 +190,16 @@ class ContactData extends Component{
 
 const mapStateToProps = (state) => {
     return{
-        ings: state.ingredients,
-        ttlPrice: state.totalPrice,
+        ings: state.burgerBuilder.ingredients,
+        ttlPrice: state.burgerBuilder.totalPrice,
+        spinner: state.order.loading
         //isPurchasable: state.purchasable,
         //isPurchasing: state.purchasing
     }
 };
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchProps = (dispatch) => {
+    return{
+        onBurgerOrder : (orderData) => dispatch(actionTypes.purchaseBurger(orderData))
+    }
+}
+export default connect(mapStateToProps, mapDispatchProps)(withErrorHandler(ContactData, axios));
