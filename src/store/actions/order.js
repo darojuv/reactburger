@@ -40,8 +40,7 @@ export const purchaseInit = () => {
     }
 }
 
-export const fetchOrderSuccess = (fetchedOrders) => {        console.log('fetchedOrders');
-
+export const fetchOrderSuccess = (fetchedOrders) => {        //console.log('fetchedOrders');
     return{
         type: actionTypes.FETCH_ORDER_SUCCESS,
         orders: fetchedOrders

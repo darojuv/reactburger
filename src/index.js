@@ -8,13 +8,15 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import bugerBuilderReducer from './store/reducers/burgerBuilder';
-import order from './store/reducers/order'
+import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
     burgerBuilder: bugerBuilderReducer,
-    order: order
+    order: orderReducer,
+    auth: authReducer
 });
 
 const reduxStore = createStore(rootReducer/* preloadedState, */

@@ -33,7 +33,7 @@ const fetchOrderStart = (state) => {
     );
 };
 const fetchOrderSuccess = (state, action) => {
-    console.log(action);
+    //console.log(action);
     return updatedObject(
         state,
         {loading: false,
@@ -46,7 +46,7 @@ const fetchOrderFail = (state) => {
         {loading: false}
     );
 }
-export const order = (state = initStateOder, action) =>{
+const order = (state = initStateOder, action) =>{
     switch(action.type){
         case (actionTypes.PURCAHSE_INIT):
             return purchaseInit(state);
