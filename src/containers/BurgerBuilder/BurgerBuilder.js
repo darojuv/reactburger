@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+//import {Redirect} from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Burger from '../../components/Burger/Burger';
@@ -63,7 +64,12 @@ class BurgerBuilder extends Component {
         // this.updatePurchaseState(updatedIngredients);   
     }
     purchaseHandler = () => {
-        this.setState({purchasing: true});
+        if(this.props.isAuthenticated){
+            this.setState({purchasing: true});
+        }else{
+            //<Redirect to="/auth" />
+            this.props.history.push("/auth");
+        }
     }
     purchaseCancelHandler = () => {
         this.setState({purchasing: false});
@@ -123,7 +129,8 @@ const mapStateToProps = (state) => {
     return{
         ings: state.burgerBuilder.ingredients,
         ttlPrice: state.burgerBuilder.totalPrice,
-        err: state.burgerBuilder.error
+        err: state.burgerBuilder.error,
+        isAuthenticated: state.auth.idToken != null
         //isPurchasable: state.purchasable,
         //isPurchasing: state.purchasing
     }

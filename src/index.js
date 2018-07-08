@@ -24,11 +24,11 @@ const reduxStore = createStore(rootReducer/* preloadedState, */
 ));
 
 const app = (
-            <Provider store={reduxStore}>
-                <BrowserRouter>
-                    <App/>
-                </BrowserRouter>
-            </Provider>
+                <Provider store={reduxStore}>
+                    <BrowserRouter>
+                        <App/>
+                    </BrowserRouter>
+                </Provider>
             );
 
 

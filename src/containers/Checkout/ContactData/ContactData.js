@@ -125,7 +125,7 @@ class ContactData extends Component{
             /*,
             deliveryMethod: 'fastest'*/
         };
-         this.props.onBurgerOrder(order);
+         this.props.onBurgerOrder(order, this.props.token);
 /*        axios.post('/orders.json', order)
          .then(response =>  {
             //console.log(response);
@@ -192,14 +192,15 @@ const mapStateToProps = (state) => {
     return{
         ings: state.burgerBuilder.ingredients,
         ttlPrice: state.burgerBuilder.totalPrice,
-        spinner: state.order.loading
+        spinner: state.order.loading,
+        token: state.auth.idToken
         //isPurchasable: state.purchasable,
         //isPurchasing: state.purchasing
     }
 };
 const mapDispatchProps = (dispatch) => {
     return{
-        onBurgerOrder : (orderData) => dispatch(actionTypes.purchaseBurger(orderData))
+        onBurgerOrder : (orderData, token) => dispatch(actionTypes.purchaseBurger(orderData, token))
     }
 }
 export default connect(mapStateToProps, mapDispatchProps)(withErrorHandler(ContactData, axios));

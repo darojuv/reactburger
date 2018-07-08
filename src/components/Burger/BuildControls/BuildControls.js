@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
+import { connect } from 'react-redux';
 
 const controls =[
     {label: 'Salad', type: 'salad'},
@@ -27,8 +28,16 @@ const buildControls = (props) => (
         disabled={!props.purchasable} 
         className={classes.OrderButton}
         onClick={props.ordered}
-        > ORDER NOW </button>
+        > 
+        {
+            props.isAuthenticated ? 'ORDER NOW' :'SIGNUP TO CONTINUE'
+        }
+        </button>
     </div>
 );
-
-export default buildControls;
+const mapStateToProps = state =>{
+    return  {
+        isAuthenticated: state.auth.idToken != null
+    }
+}
+export default connect(mapStateToProps)(buildControls);
