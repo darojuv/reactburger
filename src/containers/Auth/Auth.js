@@ -9,6 +9,7 @@ import * as actionTypes from '../../store/actions/index';
 
 class Auth extends Component {
     state = {
+        isSignUp: true,
         controls:{
             email: {
                 elementType: 'input',
@@ -40,21 +41,11 @@ class Auth extends Component {
             }            
         }
     };
-    // checkValidity(rule, value){
-    //     let isValid = true;
-    //     if(rule){
-    //         if(rule.required){
-    //             isValid = value.trim() !== '' && isValid;
-    //         }
-    //         if(rule.minLength){
-    //             isValid = value.length >= rule.minLength && isValid;
-    //         }
-    //         if(rule.maxLength){
-    //             isValid = value.length <= rule.maxLength && isValid;
-    //         }        
-    //     }
-    //     return isValid;
-    // };
+    switchAuthModeHandler = () =>{
+        this.setState(prevState => {
+            return { isSignUp : !prevState.isSignUp }
+        });
+    };
     checkValidity(value, rules) {
         let isValid = true;
         if (!rules) {
@@ -84,7 +75,7 @@ class Auth extends Component {
         }
 
         return isValid;
-    }
+    };
     inputChangeHandler(event, controlName){
         const updatedControls = {
             ...this.state.controls,
@@ -96,11 +87,13 @@ class Auth extends Component {
             }
         };
         this.setState({controls: updatedControls}); 
-    }
+    };
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
-    }
+        this.props.onAuth(this.state.controls.email.value, 
+                        this.state.controls.password.value, 
+                        this.state.isSignUp);
+    };
     render(){
         const formElement = [];
         for(let key in this.state.controls){
@@ -125,21 +118,24 @@ class Auth extends Component {
             ))}
 
             <Button btnType="Success"  > 
-                Submit 
+                SUBMIT 
             </Button>
         </form>);
         return(
             <div className={classes.Auth}>
                 {form}
+                <Button btnType="Danger" clicked={this.switchAuthModeHandler} >
+                    SWITCH TO {this.state.isSignUp ? 'SIGNIN' : 'SINGUP'} 
+                </Button>
             </div>
         );
     }
-}
+};
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch(actionTypes.auth(email, password))
+        onAuth: (email, password, bIsSignUp) => dispatch(actionTypes.auth(email, password, bIsSignUp))
     }
-}
+};
 
 export default connect(null, mapDispatchToProps)(Auth);
