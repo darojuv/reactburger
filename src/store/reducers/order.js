@@ -61,7 +61,7 @@ export const order = (state = initStateOder, action) =>{
         case (actionTypes.FETCH_ORDER_SUCCESS):
             return fetchOrderSuccess(state, action);
         case (actionTypes.FETCH_ORDER_FAIL):
-
+            return fetchOrderFail(state);
         default:
             return state
     }

@@ -157,7 +157,7 @@ class ContactData extends Component{
                 id: key,
                 config: this.state.orderForm[key]
             })
-        }
+        } 
         let form = (<form>
             <h2>Enter your contact data</h2>
             {formElement.map(element => (

@@ -8,7 +8,7 @@ const input = (props) => {
     let validationError = null;
     if(props.elementValid && props.shouldValidat && props.touched){
         inputElementClasses.push(classes.Invalid);
-        validationError = <p className={classes.ValidationError}>  Please enter valid {props.valueType} </p>;
+        validationError = <p className={classes.ValidationError}> Please enter valid {props.valueType} </p>;
     }
     switch(props.elementType){
         case ('input'):
