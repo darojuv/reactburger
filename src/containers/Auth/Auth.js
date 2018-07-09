@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classes from './Auth.css';
+import { Redirect } from 'react-router-dom';
+
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
-
-import * as actionTypes from '../../store/actions/index';
+import classes from './Auth.css';
+import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
     state = {
-        isSignUp: true,
         controls:{
             email: {
                 elementType: 'input',
@@ -39,13 +39,17 @@ class Auth extends Component {
                 isValid: false,
                 isTouched: false
             }            
+        },
+        isSignup: true
+    }
+
+    componentDidMount(){
+        if(!this.props.isBuldingBurger && this.props.authRedirectPath !== '/'){
+            //console.log('Container/Auth.js-->componentDidMount', this.props);
+            //this.props.onSetAuthRedirectPath();
         }
-    };
-    switchAuthModeHandler = () =>{
-        this.setState(prevState => {
-            return { isSignUp : !prevState.isSignUp }
-        });
-    };
+    }
+
     checkValidity(value, rules) {
         let isValid = true;
         if (!rules) {
@@ -75,8 +79,9 @@ class Auth extends Component {
         }
 
         return isValid;
-    };
-    inputChangeHandler(event, controlName){
+    }
+
+    inputChangeHandler = (event, controlName) => {
         const updatedControls = {
             ...this.state.controls,
             [controlName]: {
@@ -87,13 +92,21 @@ class Auth extends Component {
             }
         };
         this.setState({controls: updatedControls}); 
-    };
+    }
+
     submitHandler = (event) => {
         event.preventDefault();
         this.props.onAuth(this.state.controls.email.value, 
-                        this.state.controls.password.value, 
-                        this.state.isSignUp);
-    };
+                            this.state.controls.password.value, 
+                            this.state.isSignup);
+    }
+    
+    switchAuthModeHandler = () =>{
+        this.setState(prevState => {
+            return { isSignup : !prevState.isSignup }
+        });
+    }
+    
     render(){
         const formElement = [];
         for(let key in this.state.controls){
@@ -105,6 +118,11 @@ class Auth extends Component {
         let authError = null;
         if(this.props.err){
             authError = this.props.err.message
+        }
+        let redirectAfterAuth = null;
+        if(this.props.isAuthenticated){
+            console.log(this.props.authRedirectPath);
+            redirectAfterAuth = <Redirect to={this.props.authRedirectPath} />
         }
         let form = (
         <form onSubmit={this.submitHandler}>
@@ -131,9 +149,10 @@ class Auth extends Component {
 
         return(
             <div className={classes.Auth}>
+             {redirectAfterAuth}
                 { this.props.loading ? <Spinner /> : form }
                 <Button btnType="Danger" clicked={this.switchAuthModeHandler} >
-                    SWITCH TO {this.state.isSignUp ? 'SIGNIN' : 'SINGUP'} 
+                    SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SINGUP'} 
                 </Button>
             </div>
         );
@@ -142,12 +161,16 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        err: state.auth.error 
+        isAuthenticated: state.auth.idToken != null,
+        err: state.auth.error,
+        isBuldingBurger : state.burgerBuilder.bulding,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, bIsSignUp) => dispatch(actionTypes.auth(email, password, bIsSignUp))
+        onAuth: (email, password, bisSignup) => dispatch(actions.auth(email, password, bisSignup)),
+        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
     }
 };
 

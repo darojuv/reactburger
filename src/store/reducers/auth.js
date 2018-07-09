@@ -5,7 +5,8 @@ const initStateAuth = {
     idToken: null,
     userId: null,
     error: null,
-    loading: false
+    loading: false,
+    authRedirectPath: '/'
 };
 
 const authStart = (state) => {
@@ -13,29 +14,38 @@ const authStart = (state) => {
 };
 
 const authSuccess = (state, action) => {
-    return updatedObject(state, 
-            {idToken: action.authData.idToken, 
+    return updatedObject(state, {
+            idToken: action.authData.idToken, 
             userId:action.authData.localId, 
             error:null, 
-            loading: false});
+            loading: false
+        });
 };
 
 const authFail = (state, action) => {
-    return updatedObject(state, 
-            {error:action.error, 
-            loading: false});
+    return updatedObject(state,{
+            error:action.error, 
+            loading: false
+        });
 };
+
 const authLogout = (state, action) => {
-    console.log('logging out');
+   // //console.log('logging out');
     return updatedObject(state, {idToken: null, userId: null});
 };
-const reducer = (state = initStateAuth, action) => {
+const setAuthRedirectPath = (state, action) => {
+    //console.log('reducer/auth.js-->setAuthRedirectPath',state, action);
+    return updatedObject(state, {authRedirectPath:action.path});
+}
+const authReducer = (state = initStateAuth, action) => {
     switch(action.type){
         case actionTypes.AUTH_START: return authStart(state);
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
-        default:return state;
+        case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
+        default:
+            return state;
     }
 }
-export default reducer;
+export default authReducer;
