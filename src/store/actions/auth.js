@@ -8,10 +8,11 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = (iAuthData) => {
+export const authSuccess = (token,localId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: iAuthData
+        localId: localId,
+        token: token
     }
 }
 export const authFail = (iError) => {
@@ -21,6 +22,9 @@ export const authFail = (iError) => {
     }
 }
 export const authLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('userId');
     return {
             type: actionTypes.AUTH_LOGOUT
         }
@@ -55,7 +59,11 @@ export const auth = (email, password, isSignUp) => {
         .then(res => {
             try{
                // console.log(res);
-                dispatch(authSuccess(res.data));
+               const expirataionDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
+               localStorage.setItem('token', res.data.idToken);
+               localStorage.setItem('expirationDate', expirataionDate);    
+               localStorage.setItem('userId', res.data.localId);
+                dispatch(authSuccess(res.data.idToken,res.data.localId));
                 dispatch(checkoutTimeOut(res.data.expiresIn));
             }catch(er){console.log(er);}
         })
@@ -64,4 +72,22 @@ export const auth = (email, password, isSignUp) => {
             dispatch(authFail(err.response.data.error));
         });
     };
+}
+
+export const authCheckState = () => {
+    return dispatch => {
+        const token = localStorage.getItem('token');
+        if(!token){
+            dispatch(authLogout());
+        }else{
+            const expirationDate = new Date(localStorage.getItem('expirationDate'));
+            if(expirationDate <= new Date()){
+                dispatch(authLogout());
+            }else{
+                const userId = localStorage.getItem('userId');
+                dispatch(authSuccess(token, userId));
+                dispatch(checkoutTimeOut((expirationDate.getTime() - new Date().getTime())/1000));
+            }
+        }
+    }
 }
