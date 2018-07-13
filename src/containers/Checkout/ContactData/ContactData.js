@@ -8,6 +8,7 @@ import classes from './ContactData.css';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actionTypes from '../../../store/actions/index';
+import updatedObject, { checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component{
     state = {
@@ -94,30 +95,28 @@ class ContactData extends Component{
             }
         }
     }
-    checkValidity(rule, value){
-        let isValid = true;
-        if(rule){
-            if(rule.required){
-                isValid = value.trim() !== '' && isValid;
-            }
-            if(rule.minLength){
-                isValid = value.length >= rule.minLength && isValid;
-            }
-            if(rule.maxLength){
-                isValid = value.length <= rule.maxLength && isValid;
-            }        
-        }
-        return isValid;
-    }
+    // checkValidity(rule, value){
+    //     let isValid = true;
+    //     if(rule){
+    //         if(rule.required){
+    //             isValid = value.trim() !== '' && isValid;
+    //         }
+    //         if(rule.minLength){
+    //             isValid = value.length >= rule.minLength && isValid;
+    //         }
+    //         if(rule.maxLength){
+    //             isValid = value.length <= rule.maxLength && isValid;
+    //         }        
+    //     }
+    //     return isValid;
+    // }
     orderHandler = (event) => {
         event.preventDefault();
         const formData = {};
         for(let dataKey in this.state.orderForm){
             formData[dataKey] = this.state.orderForm[dataKey].value;
         }
-        //this.setState({loading: true});
-        //this.props.loading
-        //alert('You continued !');
+        
         const order = {
             ingredients: this.props.ings,
             price: this.props.ttlPrice,
@@ -127,24 +126,19 @@ class ContactData extends Component{
             deliveryMethod: 'fastest'*/
         };
          this.props.onBurgerOrder(order, this.props.token);
-/*        axios.post('/orders.json', order)
-         .then(response =>  {
-            //console.log(response);
-            this.setState({loading: false});
-            this.props.history.push('/');
-        })
-        .catch(error => {
-            //console.log('error: ' + error);
-            this.setState({loading: false});            
-        }); */
+
     }
     changeHandler(event, key){
-        const tempForm = {...this.state.orderForm};
-        const innerData = {...tempForm[key]};
-        innerData.value = event.target.value;
-        innerData.isValid = this.checkValidity(innerData.rules, event.target.value)
-        innerData.isTouched = true;
-        tempForm[key] = innerData;
+        //const tempForm = {...this.state.orderForm};
+        const innerData = updatedObject(this.state.orderForm[key],{
+            value : event.target.value,
+            isValid : checkValidity(event.target.value, this.state.orderForm[key].rules),
+            isTouched : true
+        });
+        const tempForm = updatedObject(this.state.orderForm, {
+            [key]:innerData
+        });
+        //tempForm[key] = innerData;
         let isFormValid = true;
         for(let ele in tempForm){
             isFormValid = isFormValid && tempForm[ele].isValid;
