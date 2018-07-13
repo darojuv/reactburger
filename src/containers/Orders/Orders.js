@@ -8,12 +8,9 @@ import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
-/*     state={
-        orders:[],
-        loading: false
-    } */
+
     componentDidMount(){
-        this.props.onFetchOrders(this.props.token);
+        this.props.onFetchOrders(this.props.token, this.props.userId);
     }
     // componentWillMount(){
     //     // this.setState({loading: true });
@@ -58,12 +55,13 @@ const mapStateToProps = (state) => {
     return {
         fetchedOrders: state.order.orders,
         loading: state.order.loading,
-        token: state.auth.idToken
+        token: state.auth.idToken,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetchOrders: (token) => dispatch(actions.fetchOrders(token))
+        onFetchOrders: (token, uId) => dispatch(actions.fetchOrders(token, uId))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
