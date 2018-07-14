@@ -25,7 +25,7 @@ const reduxStore = createStore(rootReducer/* preloadedState, */
 
 const app = (
                 <Provider store={reduxStore}>
-                    <BrowserRouter>
+                    <BrowserRouter basename="/burger/" >
                         <App/>
                     </BrowserRouter>
                 </Provider>
