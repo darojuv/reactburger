@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/* import React, { Component } from 'react';
 
 const asyncComponent = (importComponent) => {
     return class extends Component {
@@ -21,4 +21,4 @@ const asyncComponent = (importComponent) => {
     }
 }
 
-export default asyncComponent;
+export default asyncComponent; */
