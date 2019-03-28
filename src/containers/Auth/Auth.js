@@ -91,7 +91,7 @@ class Auth extends Component {
         }
         let redirectAfterAuth = null;
         if(this.props.isAuthenticated){
-            //console.log(this.props.authRedirectPath);
+            console.log(this.props.authRedirectPath);
             redirectAfterAuth = <Redirect to={this.props.authRedirectPath} />
         }
         let form = (
