@@ -1,31 +1,32 @@
 import React from 'react';
 
 import { configure, shallow } from 'enzyme';
-import Adaptor from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 import NavigationItems from './NavigationItems';
-import NavigationItem from './NavigationItem/NavigatoinItem';
+import NavigationItem from './NavigationItem/NavigationItem';
 
-configure({adapter: new Adaptor()});
+configure({adapter: new Adapter()});
 
-describe('NavigationItems_descript', () => {
-    let wrapper = null;
-    beforeEach(() => {        
-         wrapper = shallow(<NavigationItems />);
+describe('<NavigationItems />', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(<NavigationItems />);
     });
-    it('Should show (NavigationItems should show) two elements if not authenticate.', () => {
+
+    it('should render two <NavigationItem /> elements if not authenticated', () => {
         expect(wrapper.find(NavigationItem)).toHaveLength(2);
     });
 
-    it('Should show (NavigationItems should show) three elements if authenticate.', () => {
-        //wrapper = shallow(<NavigationItems isAuthenticated />);
+    it('should render three <NavigationItem /> elements if authenticated', () => {
+        // wrapper = shallow(<NavigationItems isAuthenticated />);
         wrapper.setProps({isAuthenticated: true});
-        
         expect(wrapper.find(NavigationItem)).toHaveLength(3);
-    });  
+    });
 
-    it('Should show (NavigationItems should show) three elements if authenticate.', () => {
-        wrapper.setProps({isAuthenticated: true});        
-        expect(wrapper.contains(<NavigationItem  link="/logout" >Logout</NavigationItem>)).toEqual(true);
-    });    
+    it('should an exact logout button', () => {
+        wrapper.setProps({isAuthenticated: true});
+        expect(wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)).toEqual(true);
+    });
 });

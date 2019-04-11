@@ -1,16 +1,16 @@
-.Input{
+.Input {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
 
-.Lable{
+.Label {
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
 }
 
-.InputElement{
+.InputElement {
     outline: none;
     border: 1px solid #ccc;
     background-color: white;
@@ -22,14 +22,11 @@
 }
 
 .InputElement:focus {
-    outline:none;
+    outline: none;
     background-color: #ccc;
 }
-.Invalid{
+
+.Invalid {
     border: 1px solid red;
-    background-color: #fda49a;
-}
-.ValidationError{
-    color: red;
-    margin: 5px 0;
+    background-color: #FDA49A;
 }
