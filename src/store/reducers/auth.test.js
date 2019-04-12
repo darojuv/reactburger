@@ -1,10 +1,10 @@
-import authReducer from './auth';
-import * as actoinTypes from '../actions/actionTypes';
+import reducer from './auth';
+import * as actionTypes from '../actions/actionTypes';
 
 describe('auth reducer', () => {
     it('should return the initial state', () => {
-        expect(authReducer(undefined, {})).toEqual({
-            idToken: null,
+        expect(reducer(undefined, {})).toEqual({
+            token: null,
             userId: null,
             error: null,
             loading: false,
@@ -12,25 +12,23 @@ describe('auth reducer', () => {
         });
     });
 
-    it('should store state upon login', () => {
-        expect(authReducer({
-            idToken: null,
+    it('should store the token upon login', () => {
+        expect(reducer({
+            token: null,
             userId: null,
             error: null,
             loading: false,
             authRedirectPath: '/'
-        }, {type:actoinTypes.AUTH_SUCCESS, 
-            token: 'some-token',
-            localId: 'some-userid'
-        })).toEqual({
+        }, { 
+            type: actionTypes.AUTH_SUCCESS,
             idToken: 'some-token',
-            userId: 'some-userid',
+            userId: 'some-user-id'
+         })).toEqual({
+            token: 'some-token',
+            userId: 'some-user-id',
             error: null,
             loading: false,
             authRedirectPath: '/'
         });
-    });
-
+    })
 });
-
-

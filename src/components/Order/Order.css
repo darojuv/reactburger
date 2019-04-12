@@ -1,14 +1,8 @@
-.Order{
+.Order {
     width: 80%;
-    border:1px solid #eee;
+    border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     padding: 10px;
-    margin:10px auto;
+    margin: 10px auto;
     box-sizing: border-box;
-}
-.igSpan{
-    /*display:inline-block;*/
-    border: 1px solid black;
-    margin: 0 5px;
-    padding: 2px;
 }

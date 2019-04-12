@@ -1,22 +1,22 @@
 import React from 'react';
 
 import { configure, shallow } from 'enzyme';
-import Adaptor from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 import { BurgerBuilder } from './BurgerBuilder';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
-configure({adapter: new Adaptor()});
+configure({adapter: new Adapter()});
 
-describe('BurgerBuilder_descript', () => {
-    let wrapper = null;
-    beforeEach(() => {        
-         wrapper = shallow(<BurgerBuilder onInitIngredients={() => {}} ings={{salad:0}}/>);
+describe('<BurgerBuilder />', () => {
+    let wrapper;
+    
+    beforeEach(() => {
+        wrapper = shallow(<BurgerBuilder onInitIngredients={() => {}}/>);
     });
 
-    it('Should show (BurgerBuilder should show).', () => {
-        //wrapper.setProps({ings:{salad:0}});
+    it('should render <BuildControls /> when receiving ingredients', () => {
+        wrapper.setProps({ings: {salad: 0}});
         expect(wrapper.find(BuildControls)).toHaveLength(1);
     });
-   
 });
